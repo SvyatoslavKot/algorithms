@@ -53,7 +53,7 @@ public class BubbleSort {
 
     private synchronized void addMessage(String msg) {
         synchronized (producer){
-            producer.addQueue(msg);
+            producer.addMessage(msg);
             producer.notifyAll();
         }
 

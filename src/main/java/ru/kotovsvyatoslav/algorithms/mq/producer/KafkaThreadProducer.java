@@ -55,28 +55,11 @@ public class KafkaThreadProducer extends Thread{
         System.out.println("producer end");
 
     }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
     public void setSorting(boolean sorting) {
         this.sorting = sorting;
     }
-    public void addQueue (String msg) {
+    public void addMessage (String msg) {
         this.msgQueue.add(msg);
-    }
-
-    public Queue<String> getMsgQueue() {
-        return msgQueue;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public void setKafkaProducer(KafkaProducer kafkaProducer) {
-        this.kafkaProducer = kafkaProducer;
     }
 }
 
