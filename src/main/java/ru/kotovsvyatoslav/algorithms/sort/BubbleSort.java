@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
 import ru.kotovsvyatoslav.algorithms.mq.KafkaSettings;
+import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaThreadProducer;
 
+import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,14 +16,19 @@ public class BubbleSort {
 
     @Autowired
     KafkaProducer kafkaProducer;
+    private KafkaThreadProducer producer;
+    private String messageProduce = new String();
 
-    public void sort (Integer [] integerArray, String sessionId) {
-        Map<String, String> msgMap = new HashMap<>();
+    public synchronized void  sort (Integer [] integerArray, String sessionId) {
+        producer  = new KafkaThreadProducer(kafkaProducer,KafkaSettings.TOPIC_ALGORITHMS_SORT_BUBBLE_ANSWER.getValue(),sessionId);
+        producer.start();
+        addMessage("Start Bubble sort");
+
         boolean isSorted = false;
         int indexI = 1;
-
         while (!isSorted) {
             isSorted = true;
+            messageProduce = "";
 
             for (int i = indexI; i < integerArray.length; i++) {
                 if (integerArray[i] < integerArray[i - 1]) {
@@ -30,23 +38,25 @@ public class BubbleSort {
                     isSorted = false;
                 }
             }
-
-        String message = " ";
-
             for (Integer integer : integerArray) {
-            message = message + integer.toString() + " ";
+                messageProduce = messageProduce + integer.toString() + " ";
         }
-
-        msgMap.put("sessionId", sessionId);
-        msgMap.put("message", message);
-            System.out.println(msgMap.get("sessionId") + msgMap.get("message"));
-        kafkaProducer.produce(KafkaSettings.TOPIC_ALGORITHMS_SORT_BUBBLE_ANSWER.getValue(), msgMap);
+            addMessage(messageProduce);
         }
-        msgMap.put("sessionId", sessionId);
-        msgMap.put("message", "sort END");
-        kafkaProducer.produce(KafkaSettings.TOPIC_ALGORITHMS_SORT_BUBBLE_ANSWER.getValue(), msgMap);
+        addMessage("Sort End");
 
+        synchronized (producer) {
+            producer.setSorting(false);
+            producer.notifyAll();
+        }
     }
 
+    private synchronized void addMessage(String msg) {
+        synchronized (producer){
+            producer.addMessage(msg);
+            producer.notifyAll();
+        }
+
+    }
 
 }
