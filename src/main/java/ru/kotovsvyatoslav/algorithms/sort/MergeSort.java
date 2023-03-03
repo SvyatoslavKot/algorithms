@@ -1,18 +1,14 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
+import ru.kotovsvyatoslav.algorithms.util.MessageSender;
 
-@Component
-public class MergeSort extends KafkaSortProducer implements Sortable {
+public class MergeSort implements Sortable {
 
-    @Autowired
-    KafkaProducer kafkaProducer;
+    private MessageSender messageSender;
 
-    @Override
-    public void kafkaProduceSort(Integer[] integerArray, String sessionId) {
-
+    public MergeSort() {
+        this.messageSender = new MessageSender();
     }
 
     public Integer[] sort (Integer[] array) {
@@ -30,11 +26,12 @@ public class MergeSort extends KafkaSortProducer implements Sortable {
             currentDest = tmp;
 
             size = size * 2;
-            System.out.println(arrayToString(currentSrc));
+            printMsg(arrayToString(currentSrc));
         }
 
         return currentSrc;
     }
+
 
     private void merge ( Integer[] srcOne, int srcOneStart, Integer[] srcTwo, int srcTwoStart, Integer[] dest, int destStart, int size) {
         int index1 = srcOneStart;
@@ -55,12 +52,14 @@ public class MergeSort extends KafkaSortProducer implements Sortable {
             }
         }
     }
-    private String arrayToString(Integer[] array) {
-        String print = "";
-        for (int el : array) {
-            print = print + " " + el;
-        }
-        return print;
 
+    @Override
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
+
+    @Override
+    public void printMsg(String msg) {
+        messageSender.messageSend(msg);
     }
 }

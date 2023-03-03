@@ -1,41 +1,37 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ru.kotovsvyatoslav.algorithms.mq.KafkaSettings;
-import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
-import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaThreadProducer;
 
-@Component
-public class QuickSort {
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
+import ru.kotovsvyatoslav.algorithms.util.MessageSender;
 
-    @Autowired
-    KafkaProducer kafkaProducer;
-    private KafkaThreadProducer producer;
+public class QuickSort implements Sortable {
+
     private String messageProduce = new String();
+    private MessageSender messageSender;
 
-    public void sort(Integer[] integers, String sessionId) {
-        producer = new KafkaThreadProducer(kafkaProducer, KafkaSettings.TOPIC_ALGORITHMS_SORT_QUICK_ANSWER.getValue(), sessionId);
-        messageProduce = messageProduce + "Start Sort Quick";
-        addMessage(messageProduce);
-        producer.start();
-
-        quickSort(integers,0, integers.length-1);
-
-        addMessage(arrayToString(integers));
-
-        addMessage("End Sort Quick");
-        producer.setSorting(false);
-
+    public QuickSort() {
+        this.messageSender = new MessageSender();
     }
 
-    private  void quickSort (Integer[] arr, int from, int to) {
+    @Override
+    public Integer[] sort(Integer[] integers) {
+        printMsg("Start Sort Quick");
+        Integer[] sortArray =  quickSort(integers,0, integers.length-1);
+        printMsg("result => " + arrayToString(sortArray));
+        printMsg("End Sort Quick");
+        return sortArray;
+    }
+
+
+
+    private  Integer[] quickSort (Integer[] arr, int from, int to) {
         if ( from < to ) {
             int divideIndex = partition(arr, from,to);
-            addMessage("Divide index -> " + divideIndex);
+            printMsg("Divide index -> " + divideIndex);
             quickSort(arr, from, divideIndex-1);
             quickSort(arr, divideIndex, to);
         }
+        return arr;
     }
 
     private int partition(Integer[] arr, int from, int to) {
@@ -53,9 +49,9 @@ public class QuickSort {
 
             if (leftIndex <= rightIndex) {
 
-                addMessage("Partition  method -> indexFrom ->"+ from + ", indexTo -> "+ to + "array -> " +  arrayToString(arr));
+                printMsg("Partition  method -> indexFrom ->"+ from + ", indexTo -> "+ to + "array -> " +  arrayToString(arr));
                 swap(arr,rightIndex,leftIndex);
-                addMessage("Partition  method after swap  array -> " +  arrayToString(arr));
+                printMsg("Partition  method after swap  array -> " +  arrayToString(arr));
 
                 leftIndex++;
                 rightIndex--;
@@ -71,19 +67,12 @@ public class QuickSort {
 
     }
 
-    private synchronized void addMessage(String msg) {
-        synchronized (producer) {
-            producer.addMessage(msg);
-            producer.notifyAll();
-        }
+    @Override
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
-
-    private String arrayToString ( Integer[] integers) {
-        String s = "";
-        for (Integer i : integers) {
-            s = s + i.toString() + ", ";
-        }
-        return s;
+    @Override
+    public void printMsg(String msg) {
+        messageSender.messageSend(msg);
     }
-
 }

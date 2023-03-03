@@ -19,6 +19,11 @@ public class KafkaThreadProducer extends Thread{
         this.sessionId = sessionId;
     }
 
+    public KafkaThreadProducer(KafkaProducer kafkaProducer, String topic) {
+        this.kafkaProducer = kafkaProducer;
+        this.topic = topic;
+    }
+
     @Override
     public void run() {
         sorting=true;
@@ -49,6 +54,10 @@ public class KafkaThreadProducer extends Thread{
     }
     public void addMessage (String msg) {
         this.msgQueue.add(msg);
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }
 

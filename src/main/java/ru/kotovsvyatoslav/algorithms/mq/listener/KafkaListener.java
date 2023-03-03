@@ -7,22 +7,24 @@ import org.springframework.stereotype.Component;
 import ru.kotovsvyatoslav.algorithms.mq.KafkaSettings;
 import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
 import ru.kotovsvyatoslav.algorithms.parser.StringToIntegerArray;
-import ru.kotovsvyatoslav.algorithms.sort.BubbleSort;
-import ru.kotovsvyatoslav.algorithms.sort.QuickSort;
+import ru.kotovsvyatoslav.algorithms.sort.*;
+import ru.kotovsvyatoslav.algorithms.util.KafkaMessageSender;
+import ru.kotovsvyatoslav.algorithms.util.MessageSender;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Component
 public class KafkaListener {
 
     private StringToIntegerArray stringToIntegerArray = new StringToIntegerArray();
     @Autowired
-    private BubbleSort bubbleSort;
-    @Autowired
-    private QuickSort quickSort;
-    @Autowired
     private KafkaProducer kafkaProducer;
+    private SortProducer sortProducer;
+
+
 
     @org.springframework.kafka.annotation.KafkaListener(topics = "algorithms-sort-bubble", groupId = "group3")
     public void bubbleSortMessage(String msg )  {
@@ -32,7 +34,10 @@ public class KafkaListener {
             String sessionId = (String) jsonObject.get("sessionId");
             try {
                 Integer[] intArray = stringToIntegerArray.stringToArray(message);
-                bubbleSort.kafkaProduceSort(intArray, sessionId);
+                sortProducer = Sorts.newSortProducer(new BubbleSort(), kafkaProducer);
+                sortProducer.kafkaProduceSort(intArray, sessionId);
+
+                //bubbleSort.kafkaProduceSort(intArray, sessionId);
             }catch (NumberFormatException e) {
                 Map<String, String> msp = new HashMap<>();
                 msp.put("sessionId", sessionId);
@@ -54,7 +59,9 @@ public class KafkaListener {
             try{
                 intArray = stringToIntegerArray.stringToArray(message);
                 if (intArray != null) {
-                    quickSort.sort(intArray, sessionId);
+                    sortProducer = Sorts.newSortProducer(new QuickSort(), kafkaProducer);
+                    sortProducer.kafkaProduceSort(intArray, sessionId);
+                    //quickSort.sort(intArray, sessionId);
                 }
 
             }catch (NumberFormatException e) {
