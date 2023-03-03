@@ -12,14 +12,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class BubbleSort {
+public class BubbleSort extends KafkaSortProducer implements Sortable {
 
     @Autowired
     KafkaProducer kafkaProducer;
-    private KafkaThreadProducer producer;
-    private String messageProduce = new String();
+    //private KafkaThreadProducer producer;
+    //private String messageProduce = new String();
 
-    public synchronized void  sort (Integer [] integerArray, String sessionId) {
+    public synchronized void  kafkaProduceSort (Integer [] integerArray, String sessionId) {
         producer  = new KafkaThreadProducer(kafkaProducer,KafkaSettings.TOPIC_ALGORITHMS_SORT_BUBBLE_ANSWER.getValue(),sessionId);
         producer.start();
         addMessage("Start Bubble sort");
@@ -56,7 +56,30 @@ public class BubbleSort {
             producer.addMessage(msg);
             producer.notifyAll();
         }
+    }
 
+    @Override
+    public Integer[] sort(Integer[] array) {
+        boolean isSorted = false;
+        int indexI = 1;
+        while (!isSorted) {
+            isSorted = true;
+            messageProduce = "";
+
+            for (int i = indexI; i < array.length; i++) {
+                if (array[i] < array[i - 1]) {
+                    int t = array[i];
+                    array[i] = array[i - 1];
+                    array[i - 1] = t;
+                    isSorted = false;
+                }
+            }
+            for (Integer integer : array) {
+                messageProduce = messageProduce + integer.toString() + " ";
+            }
+            System.out.println(messageProduce);
+        }
+        return array;
     }
 
 }

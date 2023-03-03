@@ -2,6 +2,7 @@ package ru.kotovsvyatoslav.algorithms.parser;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,4 +18,5 @@ class StringToIntegerArrayTest {
         assertTrue(integers.length == 5);
 
     }
+
 }
