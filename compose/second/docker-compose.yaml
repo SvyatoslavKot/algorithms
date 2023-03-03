@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  demo_second:
+    container_name: demo_second
+    image: svyatoslavkotov/demo:v.1.2
+    networks:
+      - app-network
+    expose:
+      - "9998"
+networks:
+  app-network:
+    driver: bridge
