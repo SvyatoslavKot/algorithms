@@ -32,7 +32,7 @@ public class KafkaListener {
             String sessionId = (String) jsonObject.get("sessionId");
             try {
                 Integer[] intArray = stringToIntegerArray.stringToArray(message);
-                bubbleSort.sort(intArray, sessionId);
+                bubbleSort.kafkaProduceSort(intArray, sessionId);
             }catch (NumberFormatException e) {
                 Map<String, String> msp = new HashMap<>();
                 msp.put("sessionId", sessionId);
