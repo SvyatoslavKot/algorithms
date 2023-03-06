@@ -1,19 +1,8 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
-@Component
-public class MergeSort extends KafkaSortProducer implements Sortable {
-
-    @Autowired
-    KafkaProducer kafkaProducer;
-
-    @Override
-    public void kafkaProduceSort(Integer[] integerArray, String sessionId) {
-
-    }
+public class MergeSort extends AbstractSort {
 
     public Integer[] sort (Integer[] array) {
         Integer[] tmp;
@@ -30,11 +19,12 @@ public class MergeSort extends KafkaSortProducer implements Sortable {
             currentDest = tmp;
 
             size = size * 2;
-            System.out.println(arrayToString(currentSrc));
+            printMsg(arrayToString(currentSrc));
         }
 
         return currentSrc;
     }
+
 
     private void merge ( Integer[] srcOne, int srcOneStart, Integer[] srcTwo, int srcTwoStart, Integer[] dest, int destStart, int size) {
         int index1 = srcOneStart;
@@ -55,12 +45,5 @@ public class MergeSort extends KafkaSortProducer implements Sortable {
             }
         }
     }
-    private String arrayToString(Integer[] array) {
-        String print = "";
-        for (int el : array) {
-            print = print + " " + el;
-        }
-        return print;
 
-    }
 }

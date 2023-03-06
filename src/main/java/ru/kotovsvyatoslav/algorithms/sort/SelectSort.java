@@ -1,9 +1,12 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-public class SelectSort {
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
-    public void sort(Integer[] array) {
+public class SelectSort extends AbstractSort {
+
+    public Integer[] sort(Integer[] array) {
         String print;
+        printMsg("SelectSort start");
         for (int step = 0; step < array.length; step ++) {
             int minValue = array[step];
             int indexMin = step;
@@ -17,13 +20,11 @@ public class SelectSort {
             int tmp = array[step];
             array[step] = array[indexMin];
             array[indexMin] = tmp;
-            print ="";
-            for (int a : array) {
-                print = print + a + " ";
 
-            }
-            System.out.println(print);
+            print = arrayToString(array);
+            printMsg(print);
         }
+        printMsg("SelectSort End");
+        return array;
     }
-
 }
