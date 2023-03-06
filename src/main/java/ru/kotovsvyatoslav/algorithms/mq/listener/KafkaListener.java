@@ -8,13 +8,10 @@ import ru.kotovsvyatoslav.algorithms.mq.KafkaSettings;
 import ru.kotovsvyatoslav.algorithms.mq.producer.KafkaProducer;
 import ru.kotovsvyatoslav.algorithms.parser.StringToIntegerArray;
 import ru.kotovsvyatoslav.algorithms.sort.*;
-import ru.kotovsvyatoslav.algorithms.util.KafkaMessageSender;
-import ru.kotovsvyatoslav.algorithms.util.MessageSender;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.KafkaSortProducerAbstract;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class KafkaListener {
@@ -22,7 +19,7 @@ public class KafkaListener {
     private StringToIntegerArray stringToIntegerArray = new StringToIntegerArray();
     @Autowired
     private KafkaProducer kafkaProducer;
-    private SortProducer sortProducer;
+    private KafkaSortProducerAbstract sortProducer;
 
 
 
@@ -36,8 +33,6 @@ public class KafkaListener {
                 Integer[] intArray = stringToIntegerArray.stringToArray(message);
                 sortProducer = Sorts.newSortProducer(new BubbleSort(), kafkaProducer);
                 sortProducer.kafkaProduceSort(intArray, sessionId);
-
-                //bubbleSort.kafkaProduceSort(intArray, sessionId);
             }catch (NumberFormatException e) {
                 Map<String, String> msp = new HashMap<>();
                 msp.put("sessionId", sessionId);
@@ -61,7 +56,6 @@ public class KafkaListener {
                 if (intArray != null) {
                     sortProducer = Sorts.newSortProducer(new QuickSort(), kafkaProducer);
                     sortProducer.kafkaProduceSort(intArray, sessionId);
-                    //quickSort.sort(intArray, sessionId);
                 }
 
             }catch (NumberFormatException e) {
@@ -73,8 +67,5 @@ public class KafkaListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        //clientService.updateClient(userDto);
-
     }
 }

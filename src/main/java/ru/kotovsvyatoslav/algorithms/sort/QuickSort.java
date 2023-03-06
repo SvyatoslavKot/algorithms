@@ -1,17 +1,9 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
 
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
-import ru.kotovsvyatoslav.algorithms.util.MessageSender;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
-public class QuickSort implements Sortable {
-
-    private String messageProduce = new String();
-    private MessageSender messageSender;
-
-    public QuickSort() {
-        this.messageSender = new MessageSender();
-    }
+public class QuickSort extends AbstractSort {
 
     @Override
     public Integer[] sort(Integer[] integers) {
@@ -67,12 +59,4 @@ public class QuickSort implements Sortable {
 
     }
 
-    @Override
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
-    }
-    @Override
-    public void printMsg(String msg) {
-        messageSender.messageSend(msg);
-    }
 }

@@ -1,15 +1,8 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
-import ru.kotovsvyatoslav.algorithms.util.MessageSender;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
-public class SelectSort implements Sortable {
-
-    private MessageSender messageSender;
-
-    public SelectSort() {
-        this.messageSender = new MessageSender();
-    }
+public class SelectSort extends AbstractSort {
 
     public Integer[] sort(Integer[] array) {
         String print;
@@ -33,15 +26,5 @@ public class SelectSort implements Sortable {
         }
         printMsg("SelectSort End");
         return array;
-    }
-
-    @Override
-    public void setMessageSender(MessageSender messageSender) {
-            this.messageSender = messageSender;
-    }
-
-    @Override
-    public void printMsg(String msg) {
-        messageSender.messageSend(msg);
     }
 }

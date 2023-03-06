@@ -1,18 +1,10 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
 import org.springframework.stereotype.Component;
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
-import ru.kotovsvyatoslav.algorithms.util.MessageSender;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
 @Component
-public class BubbleSort implements Sortable {
-
-    private String  messageProduce = new String();
-    private MessageSender messageSender;
-
-    public BubbleSort() {
-        this.messageSender = new MessageSender();
-    }
+public class BubbleSort extends AbstractSort {
 
     @Override
     public Integer[] sort(Integer[] array) {
@@ -38,12 +30,4 @@ public class BubbleSort implements Sortable {
         return array;
     }
 
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
-    }
-
-    @Override
-    public void printMsg(String msg) {
-        messageSender.messageSend(msg);
-    }
 }

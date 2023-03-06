@@ -1,15 +1,8 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.Sortable;
-import ru.kotovsvyatoslav.algorithms.util.MessageSender;
+import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
 
-public class MergeSort implements Sortable {
-
-    private MessageSender messageSender;
-
-    public MergeSort() {
-        this.messageSender = new MessageSender();
-    }
+public class MergeSort extends AbstractSort {
 
     public Integer[] sort (Integer[] array) {
         Integer[] tmp;
@@ -53,13 +46,4 @@ public class MergeSort implements Sortable {
         }
     }
 
-    @Override
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
-    }
-
-    @Override
-    public void printMsg(String msg) {
-        messageSender.messageSend(msg);
-    }
 }
