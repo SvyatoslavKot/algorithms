@@ -1,6 +1,6 @@
-package ru.kotovsvyatoslav.algorithms.sort;
+package ru.kotovsvyatoslav.algorithms.algorithms.sort;
 
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
+import ru.kotovsvyatoslav.algorithms.algorithms.sort.abstraction.AbstractSort;
 
 public class MergeSort extends AbstractSort {
 

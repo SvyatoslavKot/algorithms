@@ -1,4 +1,4 @@
-package ru.kotovsvyatoslav.algorithms.sort.abstraction;
+package ru.kotovsvyatoslav.algorithms.algorithms.sort.abstraction;
 
 
 public interface Sortable {
