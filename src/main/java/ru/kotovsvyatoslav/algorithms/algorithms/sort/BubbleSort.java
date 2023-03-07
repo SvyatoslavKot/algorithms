@@ -1,7 +1,7 @@
-package ru.kotovsvyatoslav.algorithms.sort;
+package ru.kotovsvyatoslav.algorithms.algorithms.sort;
 
 import org.springframework.stereotype.Component;
-import ru.kotovsvyatoslav.algorithms.sort.abstraction.AbstractSort;
+import ru.kotovsvyatoslav.algorithms.algorithms.sort.abstraction.AbstractSort;
 
 @Component
 public class BubbleSort extends AbstractSort {
@@ -13,7 +13,7 @@ public class BubbleSort extends AbstractSort {
         int indexI = 1;
         while (!isSorted) {
             isSorted = true;
-            messageProduce = "";
+            setMessageProduce("");
 
             for (int i = indexI; i < array.length; i++) {
                 if (array[i] < array[i - 1]) {
@@ -23,8 +23,8 @@ public class BubbleSort extends AbstractSort {
                     isSorted = false;
                 }
             }
-            messageProduce = arrayToString(array);
-            printMsg(messageProduce);
+            setMessageProduce(arrayToString(array));
+            printMsg(getMessageProduce());
         }
         printMsg("BubbleSort End");
         return array;

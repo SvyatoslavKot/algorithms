@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 @Component
 @Slf4j
-public class KafkaProducer {
+public class KafkaProducer implements MQProducer {
     @Autowired
     @Qualifier("myKafkaTemplate")
     private KafkaTemplate myKafkaTemplate;

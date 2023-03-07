@@ -2,21 +2,24 @@ package ru.kotovsvyatoslav.algorithms.mq.producer;
 
 import java.util.HashMap;
 
-public class KafkaThreadProducer extends KafkaAbstractThreadProducer{
+public class WebSocketThreadProducer extends MQAbstractThreadProducer {
 
     private String sessionId;
+    private MQProducer producer;
 
-    public KafkaThreadProducer(KafkaProducer kafkaProducer, String topic) {
-        super(kafkaProducer, topic);
+    public WebSocketThreadProducer(MQProducer producer, String topic) {
+        super(producer, topic);
+        this.producer = producer;
     }
 
     @Override
     void messageProd() {
+
         HashMap<String, String> msgMag = new HashMap<>();
         msgMag.put("sessionId", sessionId);
-        msgMag.put("message", msgQueue.poll());
+        msgMag.put("message", getMsgQueue().poll());
 
-        kafkaProducer.produce(topic, msgMag);
+        producer.produce(getTopic(), msgMag);
     }
 
     public void setSessionId(String sessionId) {

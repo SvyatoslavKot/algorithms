@@ -1,8 +1,7 @@
 package ru.kotovsvyatoslav.algorithms.sort;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import ru.kotovsvyatoslav.algorithms.algorithms.sort.SelectSort;
 
 class SelectSortTest {
 
