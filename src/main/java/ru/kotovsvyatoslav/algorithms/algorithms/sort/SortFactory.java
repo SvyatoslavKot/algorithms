@@ -24,6 +24,18 @@ public class SortFactory {
         return new MergeSort();
     }
 
+    public static AbstractSort newInsertionSort() {
+        return new InsertionSort();
+    }
+
+    public static AbstractSort newCountSort() {
+        return new CountSort();
+    }
+
+    public static AbstractSort newCombSort() {
+        return new CombSort();
+    }
+
     public static MQSortWSocketAbstractProducer newWSocketSortProducer(AbstractSort abstractSort, MQProducer mqProducer) {
         if (mqProducer.getClass().equals(KafkaProducer.class)){
             if (abstractSort.getClass().equals(BubbleSort.class)){
