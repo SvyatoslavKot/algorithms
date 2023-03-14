@@ -10,7 +10,7 @@ import ru.kotovsvyatoslav.algorithms.algorithms.sort.QuickSort;
 import ru.kotovsvyatoslav.algorithms.algorithms.sort.SortFactory;
 import ru.kotovsvyatoslav.algorithms.mq.KafkaSettings;
 import ru.kotovsvyatoslav.algorithms.mq.producer.MQProducer;
-import ru.kotovsvyatoslav.algorithms.parser.StringToIntegerArray;
+import ru.kotovsvyatoslav.algorithms.util.parser.StringToIntegerArray;
 import ru.kotovsvyatoslav.algorithms.algorithms.sort.abstraction.MQSortWSocketAbstractProducer;
 
 import java.util.HashMap;

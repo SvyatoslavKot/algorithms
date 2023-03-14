@@ -1,4 +1,4 @@
-package ru.kotovsvyatoslav.algorithms.parser;
+package ru.kotovsvyatoslav.algorithms.util.parser;
 
 public class StringToIntegerArray {
 
@@ -19,5 +19,14 @@ public class StringToIntegerArray {
             }
         }
         return intArray;
+    }
+
+    public String arrayToString ( Integer[] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Integer i : array) {
+            stringBuilder.append(i);
+            stringBuilder.append(", ");
+        }
+        return stringBuilder.toString();
     }
 }

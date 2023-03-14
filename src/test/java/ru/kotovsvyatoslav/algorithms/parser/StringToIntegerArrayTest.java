@@ -1,9 +1,7 @@
 package ru.kotovsvyatoslav.algorithms.parser;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.HashSet;
-import java.util.LinkedList;
+import ru.kotovsvyatoslav.algorithms.util.parser.StringToIntegerArray;
 
 import static org.junit.jupiter.api.Assertions.*;
 
